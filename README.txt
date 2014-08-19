@@ -2,12 +2,12 @@ ScreenConnect client deployment
 -------------------------------
 See "Client Install\ScreenConnect installation.jpg" for a diagram showing how the finished product works. Do all of this at your own risk, etc etc.
 
-1) Copy the following files to your ScreenConnect server, into C:\Program Files (x86)\ScreenConnect:
+1) Copy the following files from the "Client Install" folder to your ScreenConnect server, into C:\Program Files (x86)\ScreenConnect:
 
- - Client Install\InstallFromNCentralAgent.aspx
- - Client Install\InstallFromNCentralAgent.aspx.cs
- - Client Install\TellMeMyKey.aspx
- - Client Install\TellMeMyKey.aspx.cs
+ - InstallFromNCentralAgent.aspx
+ - InstallFromNCentralAgent.aspx.cs
+ - TellMeMyKey.aspx
+ - TellMeMyKey.aspx.cs
 
 2) Visit http://your.screenconnect.server/TellMeMyKey.aspx and copy the 10 characters you see, ready to paste later.
 
@@ -32,7 +32,7 @@ ScreenConnect Session Groups Sync
 ---------------------------------
 Continue below to configure automatic syncing of ScreenConnect session groups from your N-Central customer list.
 
-8) Copy the Session Group Sync\GenerateScreenConnectSessionGroups.ps1 to a folder on your ScreenConnect server.
+8) Copy the GenerateScreenConnectSessionGroups.ps1 from "Session Group Sync" to a folder on your ScreenConnect server.
 
 9) To be on the safe side, take a backup copy of C:\Program Files (x86)\ScreenConnect\App_Data\SessionGroup.xml
 
