@@ -18,6 +18,8 @@ See "Client Install\ScreenConnect installation.jpg" for a diagram showing how th
    <add key="NCentralServerAddress" value="http://your.ncentral.server" />
    <add key="NCentralAPIUsername" value="ncentral_api_user" />
    <add key="NCentralAPIPassword" value="ncentral_api_password" />
+   <add key="WebServerAddressableUri" value="http://your.screenconnect.server" />
+
 Replace the values with those of your environment, i.e. define an N-Central user that has API level permission.
 
 5) Download and edit the top two lines of the Client Install\InstallScreenConnect.ps1 script. Put your ScreenConnect server URI on the first line, and paste in the key from step 2 into the second variable.
