@@ -74,9 +74,9 @@ namespace NCentral
                 EncryptionKey = ServerCryptoManager.Instance.PublicKey,
             };
                 
-            var wildcardedHandlerPath = WebConfigurationManager.GetHandlerPath(typeof(InstallerHandler));
-            var handlerPath = ServerExtensions.RegexReplace(wildcardedHandlerPath, "\\*", (m, i) => i == 0 ? Resources.Default.FileDownload_BaseName : "msi");
-            handlerPath = handlerPath + ClientLaunchParameters.ToQueryString(clientLaunchParameters);
+            var wildcardedHandlerPath = WebConfigurationManager.GetHandlerPath(typeof(InstallerHandler)).ReplaceFirst("*", WebResources.GetString("FileDownload.BaseName"));
+			var handlerPath = wildcardedHandlerPath.ReplaceFirst("*", "msi");
+			handlerPath = "/" + handlerPath + ClientLaunchParameters.ToQueryString(clientLaunchParameters);
 
             Response.Redirect(getParameter("WebServerAddressableUri") + handlerPath);
             Response.End();
