@@ -1,0 +1,24 @@
+N-Central 10.1 introduced the concept of sites below customers.  The ScreenConnect installer now supports these sites by using the customProperty2 field during the ScreenConnect agent installation (customProperty1 is defined to be the Organization and is synced with the N-Central customer).
+
+The installer determines what "customer" the device belongs to (sites are implemented as customers with a top-level customer as the parent), and if it not a top-level customer, builds the installer parameter string as c=<CustomerName>&c=<SiteName>.
+
+To utilize this capability, you will need to enable customProperty2 and you will have to repush the ScreenConnect agent installer.
+
+To enable customProperty2:
+	1. Log into the Admin panel of ScreenConnect
+	2. Go to the Appearance section
+	3. In the Web Resources group, locate the fields
+		3a. SessionProperty.Custom2.AccessVisible - change this to true
+		3b. SessionProperty.Custom2.LabelText - change this to Site:
+
+The Session Group generator script optionally allows you to use the SubGroup feature in ScreenConnect 5.4+ to break out subgroups by site.  There are some caveats to this:
+
+	1. The generator applies the SubGroup feature to all SessionGroups to maintain the dynamic capability of the SubGroup filtering.  This means that all Session Groups get a SubGroup expression whether or not they have sites in N-Central.
+
+	2. Devices with no customProperty2 value show an (empty) value for the expression and are filtered into the (empty) SubGroup.
+
+	3. #'s 1 and 2 together mean that *all* SessionGroups will show an (empty) SubGroup, and for those N-Central customers that have no sites, the (empty) SubGroup will duplicate the customer level Session Group.
+
+Because of these caveats, I have made the implementation of the SubGroup expressions optional.  To enable it, edit the GenerateScreenConnectSessionGroups.ps1 script, uncomment the script line that includes the SubGroup expression and comment out the version that does not include it.  Run the generator to regenerate the SessionGroup.xml file.
+
+Instead of using SubGroups, you can also type in the site name in the search field while at the customer level and you will see all the devices assigned to that site.
