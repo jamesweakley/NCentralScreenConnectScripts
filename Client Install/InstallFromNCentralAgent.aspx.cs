@@ -55,7 +55,7 @@ namespace NCentral
             //
             // Get the list of Service Organizations
             //
-            Customer[] ServiceOrgs = nmf.getCustomerListChildren(true);
+            Customer[] ServiceOrgs = nmf.getCustomerList(true);
 
             List<CustomerInfo> SOInfoList = new List<CustomerInfo>();
             foreach (Customer SO in ServiceOrgs)
@@ -84,7 +84,7 @@ namespace NCentral
             // as customers whose parent ID is the actual customer.  Top-level customers' parent ID is the
             // Service Organization to which they belong.
             //
-            Customer[] Customers = nmf.getCustomerListChildren(false);
+            Customer[] Customers = nmf.getCustomerList(false);
 
             List<CustomerInfo> CustomerInfoList = new List<CustomerInfo>();
             foreach (Customer Cust in Customers)
@@ -113,27 +113,29 @@ namespace NCentral
             //
             DeviceInfo result = nmf.getDeviceInfo(applianceIDString);
             string customerName = null;
+            int customerID = 0;
             foreach (T_KeyValue i in result.Info)
             {
-                if (i.Key.Equals("device.customername"))
-                {
-                    customerName = i.Value[0];
-                    break;
+                switch (i.Key) {
+                    case "device.customername":
+                        customerName = i.Value[0];
+                        break;
+                    case "device.customerid":
+                        customerID = Convert.ToInt32(i.Value[0]);
+                        break;
                 }
             }
 
-            if (customerName == null)
+            if (customerID == 0)
             {
                 throw new Exception("N-Central API call to getDeviceInfo for applianceID "+applianceIDString+" did not return a value for device.customername");
             }
 
-            int customerID = 0;
             int parentID = 0;
             foreach (CustomerInfo Cust in CustomerInfoList)
             {
-                if (customerName.Equals(Cust.CustomerName))
+                if (customerID == Cust.CustomerID)
                 {
-                    customerID = Cust.CustomerID;
                     parentID = Cust.ParentID;
                     break;
                 }
@@ -261,7 +263,7 @@ namespace NCentral
         }
 
 
-        public Customer[] getCustomerListChildren(bool ListSOs = false)
+        public Customer[] getCustomerList(bool ListSOs = false)
         {
             T_KeyPair[] keyPairs = new T_KeyPair[1];
             T_KeyPair SO = new T_KeyPair();
@@ -270,10 +272,10 @@ namespace NCentral
             keyPairs[0] = SO;
 
             Customer[] results = null;
-            results = s.CustomerListChildren(username, password, keyPairs);
+            results = s.CustomerList(username, password, keyPairs);
             if (results.Length == 0)
             {
-                throw new Exception("N-Central API call to getCustomerListChildren returned no results");
+                throw new Exception("N-Central API call to getCustomerList returned no results");
             }
 
             return results;
